@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gram O' Friend</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Gram O' Friend</h1>
+    </header>
+
+    <div id="division_container">
+        <div id="left_container">
+            <h2 class="wlcm">Welcome to</h2>
+            <h1 class="gram_friend">Gram O' Friend</h1>
+            <h2 class="wlcm">Your Personal Grammar Assistant</h2>
+        </div>
+
+        <div id="right_container">
+            <h2>Question</h2>
+            <div id="inner_cont_1">
+                <div class="inner_cont_11">
+                    <textarea id="inputText" rows="4" placeholder="Enter text here or use voice input"></textarea>
+                </div>
+                <div class="inner_cont_12">
+                    <button onclick="startDictation()" class="c1_btn"><img src="../static/mike.webp" alt=""></button>  
+                    <button onclick="correctText()" class="c1_btn"><img src="../static/correct_icon.jpg" alt=""></button>
+                </div>
+            </div>
+
+            <h2>Corrected Text</h2>
+            <div id="inner_cont_2">
+                <div class="inner_cont_11">
+                    <textarea id="outputText" rows="4" readonly></textarea>
+                </div>
+                <div class="inner_cont_12">
+                    <button onclick="speakText()" class="c1_btn"><img src="../static/speaker_icon.png" alt=""></button>
+                    <button onclick="getAnswer()" class="c1_btn"><img src="../static/send_image.png" alt=""></button>
+                </div>
+            </div>
+            
+            <h2>Answer</h2>
+            <textarea id="answerText" rows="4" readonly></textarea>
+        </div>
+    </div>
+
+
+    <script>
+        function correctText() {
+            const inputText = document.getElementById('inputText').value;
+            fetch('http://localhost:5000/correct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sentence: inputText }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('outputText').value = data[0];
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function startDictation() {
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = "en-US";
+                recognition.start();
+
+                recognition.onresult = function(e) {
+                    document.getElementById('inputText').value = e.results[0][0].transcript;
+                    recognition.stop();
+                };
+
+                recognition.onerror = function(e) {
+                    recognition.stop();
+                };
+            }
+        }
+
+        function speakText() {
+            const text = document.getElementById('outputText').value;
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function getAnswer() {
+            const question = document.getElementById('outputText').value;
+            fetch('http://localhost:5000/answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: question }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answerText').value = data.answer;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
