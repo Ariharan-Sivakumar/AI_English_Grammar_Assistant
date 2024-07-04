@@ -35,6 +35,7 @@ This project aims to revolutionize language learning and communication by introd
 |   |-> index.html
 |-> app.py
 |-> context.txt
+|-> requirements.txt
 ```
 
 - `__pycache__`: Contains Python bytecode files.
