@@ -6,6 +6,8 @@
     <title>Gram O' Friend</title>
     <link rel="stylesheet" href="../static/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
 </head>
 <body>
     <header>
@@ -50,8 +52,9 @@
 
     <script>
         function correctText() {
+        alert("clicked");
             const inputText = document.getElementById('inputText').value;
-            fetch('http://localhost:5000/correct', {
+            fetch('http://localhost:5001/correct', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,8 +96,9 @@
         }
 
         function getAnswer() {
+            alert("clicked me");
             const question = document.getElementById('outputText').value;
-            fetch('http://localhost:5000/answer', {
+            fetch('http://localhost:5001/answer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
