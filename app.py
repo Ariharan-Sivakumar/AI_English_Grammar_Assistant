@@ -24,6 +24,7 @@ class Gramformer:
             print("TO BE IMPLEMENTED!!!")
 
     def correct(self, input_sentence, max_candidates=1):
+        print(f"Input to correct: {input_sentence}") 
         if self.model_loaded:
             correction_prefix = "gec: "
             input_sentence = correction_prefix + input_sentence
@@ -60,7 +61,7 @@ qa_pipeline = pipeline('question-answering', model=qa_model, tokenizer=qa_tokeni
 def index():
     return render_template('index.html')
 
-@app.route('/correct', methods=['POST'])
+@app.route('/correct', methods=['POST']) #link
 def correct():
     data = request.json
     sentence = data['sentence']
@@ -74,5 +75,7 @@ def answer():
     answer = qa_pipeline(question=question, context=context)
     return jsonify(answer)
 
+#if __name__ == '__main__':
+   # app.run(debug=True)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001, debug=True) 
