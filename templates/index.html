@@ -51,10 +51,11 @@
 
 
     <script>
+        const baseUrl = window.location.origin;
         function correctText() {
         alert("clicked");
             const inputText = document.getElementById('inputText').value;
-            fetch('http://localhost:5001/correct', {
+            fetch(`${baseUrl}/correct`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -98,7 +99,7 @@
         function getAnswer() {
             alert("clicked me");
             const question = document.getElementById('outputText').value;
-            fetch('http://localhost:5001/answer', {
+            fetch(`${baseUrl}/answer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
