@@ -55,7 +55,7 @@
         function correctText() {
         alert("clicked");
             const inputText = document.getElementById('inputText').value;
-            fetch(`${baseUrl}/correct`, {
+            fetch('http://localhost:5001/correct', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@
         function getAnswer() {
             alert("clicked me");
             const question = document.getElementById('outputText').value;
-            fetch(`${baseUrl}/answer`, {
+            fetch('http://localhost:5001/answer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
